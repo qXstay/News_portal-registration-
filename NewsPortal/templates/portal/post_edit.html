@@ -1,0 +1,35 @@
+{% extends 'default.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>
+        {% if object %}Редактирование{% else %}Создание{% endif %}
+        {% if request.path|slice:"1:5" == 'news' %}новости{% else %}статьи{% endif %}
+    </h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.title.label_tag }}
+            {{ form.title }}
+        </div>
+        <div class="mb-3">
+            {{ form.content.label_tag }}
+            {{ form.content }}
+        </div>
+        <div class="mb-3">
+            <label>Категории:</label>
+            <div class="form-check">
+                {% for category in form.categories %}
+                    <div class="form-check">
+                        {{ category.tag }}  <!-- Чекбокс -->
+                        <label class="form-check-label" for="{{ category.id_for_label }}">
+                            {{ category.choice_label }}  <!-- Название категории -->
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+</div>
+{% endblock %}
